@@ -1,6 +1,6 @@
-def calc_sum(a: int, b: int, c: int) -> int:
-    return a + b + c
+def calc_sum(*args: int) -> int:
+    return sum(args)
 
 if __name__ == "__main__":
-    x, y, z = map(int, input().split())
-    print(calc_sum(x, y, z))
+    nums = map(int, input().split())
+    print(calc_sum(*nums))
