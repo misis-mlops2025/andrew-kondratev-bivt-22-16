@@ -1,20 +1,20 @@
-import pandas as pd
-import typer
-import yaml
-import joblib
 import json
 from pathlib import Path
 
+import joblib
 from loguru import logger
+import pandas as pd
+import typer
+import yaml
 
-from src.config import TrainingConfig, CONFIGS_DIR, PROCESSED_DATA_DIR, MODELS_DIR
+from src.config import CONFIGS_DIR, MODELS_DIR, PROCESSED_DATA_DIR, TrainingConfig
 from src.modeling.model import create_model
-
 
 app = typer.Typer()
 
 
 class Trainer:
+    """Class for training model"""
     def __init__(self, config: TrainingConfig, features_path: Path, labels_path: Path):
         self.config = config
         self.model = create_model(self.config.model)
@@ -25,18 +25,18 @@ class Trainer:
         """Train the model"""
         x, y = pd.read_csv(self.features_path), pd.read_csv(self.labels_path).squeeze()
         self.model.fit(x, y)
-        logger.info(f"Model trained")
+        logger.info("Model trained")
 
     def save_model(self):
         """Save trained model and metadata"""
         output_dir = MODELS_DIR / f"{self.config.model.model_type.value}"
         output_dir.mkdir(exist_ok=True)
 
-        model_filename = output_dir / f"model.joblib"
-        config_filename = output_dir / f"config.json"
+        model_filename = output_dir / "model.joblib"
+        config_filename = output_dir / "config.json"
 
         joblib.dump(self.model, model_filename)
-        with open(config_filename, 'w') as f:
+        with open(config_filename, "w", encoding='UTF-8') as f:
             json.dump(self.config.model_dump(), f, indent=2, default=str)
 
         logger.info(f"Model saved to {model_filename}")
@@ -49,7 +49,8 @@ def main(
     features_path: Path = PROCESSED_DATA_DIR / "train_features.csv",
     labels_path: Path = PROCESSED_DATA_DIR / "train_labels.csv",
 ):
-    with open(config_path) as cfg_file:
+    """Train the model and save weights"""
+    with open(config_path, encoding='UTF-8') as cfg_file:
         load_config = yaml.safe_load(cfg_file)
 
     config = TrainingConfig(**load_config)

@@ -1,14 +1,15 @@
+# pylint: disable=no-member
 from pathlib import Path
-
-import pandas as pd
-import typer
-import yaml
-from loguru import logger
-from sklearn.datasets import make_classification
-from sklearn.model_selection import train_test_split
 from typing import Tuple
 
-from src.config import DataConfig, PROCESSED_DATA_DIR, TrainingConfig, CONFIG_PATH
+from loguru import logger
+import pandas as pd
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+import typer
+import yaml
+
+from src.config import CONFIG_PATH, PROCESSED_DATA_DIR, DataConfig, TrainingConfig
 
 app = typer.Typer()
 
@@ -22,7 +23,7 @@ def generate_dataset(config: DataConfig) -> Tuple[pd.DataFrame, pd.Series]:
         n_redundant=config.n_redundant,
         n_repeated=config.n_repeated,
         n_classes=config.n_classes,
-        random_state=config.random_state
+        random_state=config.random_state,
     )
 
     feature_names = [f"feature_{i}" for i in range(config.n_features)]
@@ -31,21 +32,17 @@ def generate_dataset(config: DataConfig) -> Tuple[pd.DataFrame, pd.Series]:
 
     return df, target
 
+
 @app.command()
-def main(
-    output_dir: Path = PROCESSED_DATA_DIR,
-    config_path: Path = CONFIG_PATH
-):
-    with open(config_path) as cfg_file:
+def main(output_dir: Path = PROCESSED_DATA_DIR, config_path: Path = CONFIG_PATH):
+    """Generate synthetic classification dataset"""
+    with open(config_path, encoding='UTF-8') as cfg_file:
         load_config = yaml.safe_load(cfg_file)
     config = TrainingConfig(**load_config).data
 
     x, y = generate_dataset(config)
     x_train, x_test, y_train, y_test = train_test_split(
-        x, y,
-        test_size=config.test_size,
-        random_state=config.random_state,
-        stratify=y
+        x, y, test_size=config.test_size, random_state=config.random_state, stratify=y
     )
 
     train_features_path = output_dir / config.train_features_filename

@@ -45,3 +45,35 @@ extend-select = ["I"]  # Add import sorting
 known-first-party = ["src"]
 force-sort-within-sections = true
 
+[tool.pylint.master]
+# Плагины
+load-plugins = []
+
+# Игнорируемые директории
+ignore = ["tests", ".venv", "venv", "__pycache__"]
+
+[tool.pylint.messages_control]
+# Отключенные правила
+disable = []
+
+[tool.pylint.format]
+# Максимальная длина строки
+max-line-length = 120
+
+# Отступы
+indent-string = "    "
+
+[tool.pylint.basic]
+# "Хорошие" короткие имена переменных
+good-names = ["i", "j", "k", "x", "y", "df", "e", "lr", "rf", "dt", "cv"]
+
+[tool.pylint.design]
+# Максимальное количество аргументов
+max-args = 7
+
+# Максимальное количество локальных переменных
+max-locals = 20
+
+[tool.pylint.similarities]
+# Минимальное количество строк для определения дубликатов
+min-similarity-lines = 10

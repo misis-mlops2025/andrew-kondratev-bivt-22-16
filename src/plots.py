@@ -2,7 +2,6 @@ from loguru import logger
 from tqdm import tqdm
 import typer
 
-
 app = typer.Typer()
 
 
@@ -13,6 +12,7 @@ def main(
     # output_path: Path = FIGURES_DIR / "plot.png",
     # -----------------------------------------
 ):
+    """Plot metrics"""
     # ---- REPLACE THIS WITH YOUR OWN CODE ----
     logger.info("Generating plot from data...")
     for i in tqdm(range(10), total=10):

@@ -1,9 +1,6 @@
-from pathlib import Path
-
 from loguru import logger
 from tqdm import tqdm
 import typer
-
 
 app = typer.Typer()
 
@@ -15,6 +12,7 @@ def main(
     # output_path: Path = PROCESSED_DATA_DIR / "features.csv",
     # -----------------------------------------
 ):
+    """Generate  features for dataset"""
     # ---- REPLACE THIS WITH YOUR OWN CODE ----
     logger.info("Generating features from dataset...")
     for i in tqdm(range(10), total=10):

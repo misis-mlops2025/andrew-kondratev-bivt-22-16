@@ -1,8 +1,9 @@
+# pylint: disable=no-member
+from enum import Enum
 from pathlib import Path
+from typing import Optional
 
 from pydantic import BaseModel, Field
-from typing import Optional
-from enum import Enum
 
 
 class LogisticRegressionConfig(BaseModel):
@@ -43,7 +44,9 @@ class DataConfig(BaseModel):
     test_size: float = Field(0.2, description="Test set size ratio")
     random_state: int = Field(42, description="Random state")
 
-    train_features_filename: str = Field("train_features.csv", description="Train features filename")
+    train_features_filename: str = Field(
+        "train_features.csv", description="Train features filename"
+    )
     train_labels_filename: str = Field("train_labels.csv", description="Train labels filename")
     test_features_filename: str = Field("test_features.csv", description="Test features filename")
     test_labels_filename: str = Field("test_labels.csv", description="Test labels filename")
