@@ -77,3 +77,8 @@ max-locals = 20
 [tool.pylint.similarities]
 # Минимальное количество строк для определения дубликатов
 min-similarity-lines = 10
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=7.0.0",
+]

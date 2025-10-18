@@ -15,7 +15,7 @@ PYTHON_INTERPRETER = python
 .PHONY: requirements
 requirements:
 	uv sync
-	
+
 
 
 
@@ -39,12 +39,14 @@ format:
 	ruff format
 
 
-
-## Run tests
+## Tests
 .PHONY: test
 test:
-	python -m pytest tests
+	pytest -v
 
+.PHONE: coverage
+coverage:
+	pytest --cov
 
 ## Set up Python interpreter environment
 .PHONY: create_environment
